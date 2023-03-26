@@ -8,13 +8,18 @@ defineProps<{ stopwatch: IStopwatch }>()
 
 const isPlaying = ref<boolean>(false)
 
+let elapsed = 0
+let start = 0
+
 const handlePlay = (id: number) => {
   const index = stopwatchesState.findIndex((i) => i.id == id)
   if (stopwatchesState[index].interval) return
   isPlaying.value = true
+  start = Date.now() - elapsed
   stopwatchesState[index].interval = setInterval(() => {
-    stopwatchesState[index].seconds += 1
-  }, 1000)
+    elapsed = Date.now() - start
+    stopwatchesState[index].seconds = Math.floor(elapsed / 1000)
+  }, 500)
 }
 const handleStop = (id: number) => {
   const index = stopwatchesState.findIndex((i) => i.id == id)
@@ -22,6 +27,7 @@ const handleStop = (id: number) => {
     clearInterval(stopwatchesState[index].interval)
     stopwatchesState[index].interval = 0
     isPlaying.value = false
+    elapsed = Date.now() - start
   }
 }
 const handleReset = (id: number) => {
@@ -30,6 +36,8 @@ const handleReset = (id: number) => {
   stopwatchesState[index].interval = 0
   stopwatchesState[index].seconds = 0
   isPlaying.value = false
+  elapsed = 0
+  start = 0
 }
 </script>
 
