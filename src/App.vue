@@ -48,7 +48,7 @@ const handleAdd = () => {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media (max-width: 320px) {
+@media (max-width: 485px) {
   .app {
     grid-template-columns: 1fr;
   }
